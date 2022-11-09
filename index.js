@@ -58,15 +58,24 @@ async function run(){
             res.send(result)
           })
 
-          // delete buttion click 
-    //    app.delete('/orders/:id',async(req,res)=>{
-    //     const id = req.params.id
-    //     const query = { _id:ObjectId(id) };
-    //     const result = await orderCollection.deleteOne(query)
-    //     res.send(result)
-    //    })
+         
 
-    //  delete button click 
+    // update button click 
+
+    app.patch('/Orders/:id',async(req,res)=>{
+        const id  = req.params.id;
+        const status= req.body.status;
+        const query = {_id:ObjectId(id)}
+        const updateDoc= {
+            $set:{
+                status:status
+            }
+            
+        }
+        const result = await orderCollection.updateOne(query,updateDoc)
+        res.send(result)
+        
+    })
 
     app.delete('/Orders/:id',async(req,res)=>{
         const id = req.params.id
