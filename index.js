@@ -1,5 +1,6 @@
 const express = require('express')
 const cors = require('cors')
+const jwt = require("jsonwebtoken")
 const { MongoClient, ServerApiVersion, ObjectId,  } = require('mongodb');
 require('dotenv').config()
 const app = express()
@@ -23,11 +24,24 @@ async function run(){
     client.connect()
     console.log("database connect");
     try{
+
+        // jwt 
+        app.post('/jwt',(req,res)=>{
+            const user = req.body;
+            const token =jwt.sign(user,process.env.ACCESS_TOKEN_SECRET,{expiresIn:'1d'})
+            res.send({token})
+        })
         app.get('/Service',async(req,res)=>{
             const query = {};
             const cursor = servicesCollection.find(query);
-            const service= await cursor.toArray();
+            const service= await cursor.limit(3).toArray();
             res.send(service)
+        })
+        app.get('/service',async(req,res)=>{
+            const query = {};
+            const cursor = servicesCollection.find(query);
+            const servic= await cursor.limit(6).toArray();
+            res.send(servic)
         })
 
         // speack  id 
