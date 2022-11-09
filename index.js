@@ -30,18 +30,51 @@ async function run(){
             res.send(service)
         })
 
+        // speack  id 
         app.get('/Service/:id',async(req,res)=>{
             const id = req.params.id;
             const query={_id:ObjectId(id)}
             const service = await servicesCollection.findOne(query)
             res.send(service)
         })
-          
+
+
+        // orders api 
+        app.get('/Orders',async(req,res)=>{
+            let query = {};
+             if(req.query.email){
+                query={
+                    email:req.query.email
+                }
+             }
+             const cursor = orderCollection.find(query)
+             const  order = await cursor.toArray()
+             res.send(order)
+            })
+            
           app.post('/Orders',async(req,res)=>{
             const order = req.body;
             const result = await orderCollection.insertOne(order)
             res.send(result)
           })
+
+          // delete buttion click 
+    //    app.delete('/orders/:id',async(req,res)=>{
+    //     const id = req.params.id
+    //     const query = { _id:ObjectId(id) };
+    //     const result = await orderCollection.deleteOne(query)
+    //     res.send(result)
+    //    })
+
+    //  delete button click 
+
+    app.delete('/Orders/:id',async(req,res)=>{
+        const id = req.params.id
+        const query = {_id:ObjectId(id)};
+        const result = await orderCollection.deleteOne(query)
+        res.send(result)
+    })
+    
        
 
 
