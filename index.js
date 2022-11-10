@@ -81,7 +81,7 @@ async function run(){
              const  order = await cursor.toArray()
              res.send(order)
             })
-            
+            // post api 
           app.post('/Orders',async(req,res)=>{
             const order = req.body;
             const result = await orderCollection.insertOne(order)
